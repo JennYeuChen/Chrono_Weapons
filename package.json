@@ -1,7 +1,3 @@
-git add package.json
-git commit -m "Update: Armory manifest with Chrono components"
-git push origin main
-
 {
   "name": "chrono-weapons",
   "version": "0.1.0",
