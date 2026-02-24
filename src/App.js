@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   DndContext, 
   closestCenter, 
@@ -17,18 +17,10 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { 
-  Plus, 
   GripVertical, 
   Trash2, 
   Edit3,
   Clock, 
-  X,
-  Terminal,
-  Cpu,
-  Zap,
-  Activity,
-  Save,
-  Settings,
   AlertTriangle,
   RefreshCw
 } from 'lucide-react';
