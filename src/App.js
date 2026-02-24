@@ -530,12 +530,13 @@ export default function App() {
         .animate-content-show { animation: content-fade-in 0.3s cubic-bezier(0.2, 0, 0, 1) forwards; }
       `}} />
 
-      {/* --- 通用編輯彈窗 --- */}
-      {editingObject && (
-        <div 
-          className={`fixed inset-0 z-[200] flex items-center justify-center p-4 transition-all duration-1000 cubic-bezier
-            ${isClosingModal ? 'backdrop-blur-none bg-black/0' : 'backdrop-blur-md bg-black/60'}`}
-        >
+{/* --- 通用編輯彈窗 --- */}
+{editingObject && (
+  <div 
+    className={`fixed inset-0 z-[200] flex items-center justify-center p-4 transition-all duration-700
+      ${(!isModalMounted || isClosingModal) ? 'backdrop-blur-none bg-black/0' : 'backdrop-blur-md bg-black/60'}`}
+  >
+    {/* 這裡面的 form 內容不變 */}
           <form 
             onSubmit={saveEdit}
             className={`relative bg-[#0d0d0d] border border-[#ffcc00]/40 w-full max-w-sm overflow-hidden
