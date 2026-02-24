@@ -161,22 +161,29 @@ export default function App() {
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
 
-  useEffect(() => {
-    if (editingObject) {
-      const timer = setTimeout(() => setShowModalContent(true), 50);
-      return () => clearTimeout(timer);
-    } else {
-      setShowModalContent(false);
-    }
-  }, [editingObject]);
+useEffect(() => {
+  if (editingObject) {
+    // 1. 立即或微延遲標記已掛載，觸發背景模糊動畫
+    setIsModalMounted(true); 
+    
+    // 2. 稍微延遲顯示內部文字內容
+    const timer = setTimeout(() => setShowModalContent(true), 150);
+    return () => clearTimeout(timer);
+  } else {
+    setShowModalContent(false);
+    setIsModalMounted(false); // 關閉時重置
+  }
+}, [editingObject]);
 
-  const closeModal = () => {
-    setIsClosingModal(true);
-    setTimeout(() => {
-      setEditingObject(null);
-      setIsClosingModal(false);
-    }, 400); // 與動畫時間匹配
-  };
+const closeModal = () => {
+  setIsClosingModal(true);
+  setIsModalMounted(false); // 讓背景開始淡出
+  
+  setTimeout(() => {
+    setEditingObject(null);
+    setIsClosingModal(false);
+  }, 400); 
+};
 
   const changeView = (view, id = null) => {
     setIsChangingPage(true);
@@ -275,7 +282,7 @@ export default function App() {
         <div className="absolute inset-0 shadow-[inset_0_0_150px_rgba(0,0,0,0.8)]"></div>
       </div>
 
-      <div className={`w-full max-w-2xl relative z-10 transition-all duration-00 ${isChangingPage ? 'animate-page-exit' : 'animate-page-enter'}`}>
+      <div className={`w-full max-w-2xl relative z-10 transition-all duration-500 ${isChangingPage ? 'animate-page-exit' : 'animate-page-enter'}`}>
         
         {currentView === 'HOME' && (
           <div key="home-view">
