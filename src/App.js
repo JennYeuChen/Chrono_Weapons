@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   DndContext, 
-  closestCenter, 
+  closestCenter， 
   KeyboardSensor, 
   PointerSensor, 
   useSensor, 
@@ -615,89 +615,55 @@ export default function App() {
 }
 
 // --- 視覺定義：黑黃色調 ---
-const UI_THEME = {
-  bg: 'bg-[#0a0a0a]',
-  surface: 'bg-[#151515]',
-  accent: 'text-[#ffcc00]',
-  accentBg: 'bg-[#ffcc00]',
-  border: 'border-[#ffcc00]/20',
-  text: 'text-white',
-  rounded: 'rounded-2xl' 
-};
+// --- 在 App 組件內部 ---
 
-// --- 文字亂碼動畫 ---
-const useGlitchText = (text, trigger) => {
-  const [displayText, setDisplayText] = useState(text);
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*@$";
+// 1. 修正後的 useEffect (解決第一次打開沒動畫)
+useEffect(() => {
+  if (editingObject) {
+    // 關鍵：用 setTimeout 稍微延遲，強迫瀏覽器分兩步渲染
+    const animTimer = setTimeout(() => {
+      setIsModalMounted(true);
+    }, 30); 
+    
+    const contentTimer = setTimeout(() => {
+      setShowModalContent(true);
+    }, 100);
+    
+    return () => {
+      clearTimeout(animTimer);
+      clearTimeout(contentTimer);
+    };
+  } else {
+    setIsModalMounted(false);
+    setShowModalContent(false);
+  }
+}, [editingObject]);
+
+// 2. 修正後的 closeModal (解決背景消失太快)
+const closeModal = () => {
+  setIsClosingModal(true);
+  setIsModalMounted(false); // 讓背景開始淡出
   
-  useEffect(() => {
-    let iteration = 0;
-    const interval = setInterval(() => {
-      setDisplayText(prev => 
-        text.split("").map((char, index) => {
-          if (index < iteration) return text[index];
-          return chars[Math.floor(Math.random() * chars.length)];
-        }).join("")
-      );
-      if (iteration >= text.length) clearInterval(interval);
-      iteration += 1/2;
-    }, 20);
-    return () => clearInterval(interval);
-  }, [text, trigger]);
-  
-  return displayText;
+  setTimeout(() => {
+    setEditingObject(null);
+    setIsClosingModal(false);
+  }, 700); 
 };
 
-// --- 可排序項目組件 ---
-const SortableItem = ({ id, item, onDelete, onEdit }) => {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
-  const glitchTitle = useGlitchText(item.title, item.id);
+// ... 中間的代碼不變 ...
 
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0 : 1,
-  };
-
-  return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      className={`relative group border ${UI_THEME.border} mb-2 ${UI_THEME.surface} p-5 flex items-center gap-6 overflow-hidden transition-all hover:bg-[#222] hover:border-[#ffcc00]/50 hover:scale-[1.01] active:scale-[0.98] ${UI_THEME.rounded}`}
-    >
-      <div className="flex flex-col items-center opacity-30 group-hover:opacity-100 group-hover:animate-jitter">
-        <span className="text-[7px] font-mono text-[#ffcc00] mb-2 leading-none uppercase tracking-tighter">REF_{id}</span>
-        <div {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing p-1">
-          <GripVertical size={14} className="text-[#ffcc00]" />
-        </div>
-      </div>
-
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-3 mb-1">
-          <span className={`text-[10px] text-black font-black ${UI_THEME.accentBg} px-1.5 py-0.5 rounded-md`}>
-            {String(item.index + 1).padStart(2, '0')}
-          </span>
-          <h3 className="font-bold text-white truncate text-xs tracking-[0.2em] uppercase">
-            {glitchTitle}
-          </h3>
-        </div>
-        <div className="flex items-center gap-4 text-[9px] font-mono text-[#ffcc00]/40 uppercase tracking-widest">
-          <span className="flex items-center gap-1"><Clock size={10} /> {item.hours || '0'}H {item.minutes || '0'}M</span>
-          <span className="text-[8px] italic opacity-50">STATUS: SECURE_NODE</span>
-        </div>
-      </div>
-
-      <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all">
-        <button onClick={() => onEdit(item)} className={`p-2 border border-[#ffcc00]/20 hover:bg-[#ffcc00] hover:text-black transition-colors rounded-lg`}>
-          <Edit3 size={12} />
-        </button>
-        <button onClick={() => onDelete(id)} className={`p-2 border border-red-900/40 hover:bg-red-600 transition-colors rounded-lg`}>
-          <Trash2 size={12} />
-        </button>
-      </div>
-    </div>
-  );
-};
+// 3. 找到下方的彈窗 JSX，確保 className 判斷正確
+{editingObject && (
+  <div 
+    className={`fixed inset-0 z-[200] flex items-center justify-center p-4 transition-all duration-700 ease-in-out
+      ${(!isModalMounted || isClosingModal) ? 'backdrop-blur-none bg-black/0' : 'backdrop-blur-md bg-black/60'}`}
+  >
+    {/* 這裡面的 form 內容保持不變 */}
+    <form onSubmit={saveEdit} ... >
+      ...
+    </form>
+  </div>
+)}
 
 // --- 主程式 ---
 export default function App() {
