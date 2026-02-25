@@ -384,7 +384,7 @@ const closeModal = () => {
             <header className="mb-12">
               <div className="flex items-end justify-between border-b border-[#ffcc00]/10 pb-8">
                 <div className="space-y-2">
-                  <span className="text-[10px] font-black text-[#ffcc00] opacity-30 uppercase tracking-[0.5em]">Protocol_Active</span>
+                  <span className="text-[10px] font-black text-[#ffcc00] opacity-30 uppercase tracking-[0.5em]">系統啟動</span>
                   <div className="flex items-center gap-4">
                     <h2 className="text-3xl md:text-5xl font-black italic tracking-tighter uppercase text-white">{currentSchedule.name}</h2>
                     <button 
@@ -405,7 +405,7 @@ const closeModal = () => {
                     <span className="text-[#ffcc00]/20 mr-4 text-xs font-black">{`>>`}</span>
                     <input
                       type="text"
-                      placeholder="COMMAND_INPUT..."
+                      placeholder="創建新的節點..."
                       className="w-full bg-transparent font-bold text-white placeholder:text-[#ffcc00]/10 outline-none text-[11px] tracking-widest uppercase"
                       value={newItem.title}
                       onChange={(e) => setNewItem({ ...newItem, title: e.target.value })}
@@ -560,14 +560,14 @@ const closeModal = () => {
           >
             <div className={`p-8 md:p-10 transition-opacity duration-300 ${showModalContent && !isClosingModal ? 'animate-content-show' : 'opacity-0'}`}>
               <h2 className="text-[10px] font-black mb-10 border-b border-[#ffcc00]/20 pb-5 uppercase tracking-[0.4em] text-[#ffcc00] flex items-center justify-between">
-                <span className="flex items-center gap-3"><AlertTriangle size={14} /> MOD_OVERRIDE</span>
+                <span className="flex items-center gap-3"><AlertTriangle size={14} /> 編輯模式</span>
                 <span className="text-[8px] opacity-30 font-mono">REF_{editingObject.data.id}</span>
               </h2>
 
               <div className="space-y-8 mb-12">
                 {editingObject.type === 'schedule' ? (
                   <div className="space-y-3">
-                    <label className="text-[8px] text-[#ffcc00]/40 ml-1 font-black tracking-[0.3em] uppercase">Protocol_Identifier</label>
+                    <label className="text-[8px] text-[#ffcc00]/40 ml-1 font-black tracking-[0.3em] uppercase">名字</label>
                     <input 
                       name="name"
                       autoFocus
@@ -618,13 +618,13 @@ const closeModal = () => {
                   onClick={closeModal} 
                   className="flex-1 py-5 text-[9px] font-black border border-[#ffcc00]/20 hover:bg-white/5 rounded-2xl transition-all tracking-[0.3em] uppercase"
                 >
-                  ABORT
+                  取消
                 </button>
                 <button 
                   type="submit"
                   className="flex-[2] py-5 bg-[#ffcc00] text-black text-[9px] font-black rounded-2xl hover:bg-white transition-all shadow-[0_0_30px_rgba(255,204,0,0.2)] tracking-[0.3em] px-8 uppercase"
                 >
-                  COMMIT_CHANGES
+                  儲存
                 </button>
               </div>
             </div>
