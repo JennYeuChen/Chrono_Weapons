@@ -134,14 +134,17 @@ const SortableItem = ({ id, item, onDelete, onEdit }) => {
 };
 
 export default function App() {
-  const [schedules, setSchedules] = useState([
+const [schedules, setSchedules] = useState(() => {
+  const saved = localStorage.getItem('CHRONO_DATA');
+  return saved ? JSON.parse(saved) : [
     { id: 'S1', name: 'TACTICAL_OPS_2024', items: [
       { id: '401', title: 'SYSTEM_BOOT_SEQUENCE', hours: '0', minutes: '45' },
       { id: '402', title: 'FIELD_SURVEY_ALPHA', hours: '2', minutes: '30' }
     ]},
     { id: 'S2', name: 'CORE_DATA_RECOVERY', items: [] }
-  ]);
-
+  ];
+});
+  
   // --- 視圖與數據狀態 ---
   const [currentView, setCurrentView] = useState('HOME');
   const [activeScheduleId, setActiveScheduleId] = useState(null);
@@ -161,17 +164,22 @@ export default function App() {
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
 
+// 在 App 組件內的 useEffect 區塊添加：
+useEffect(() => {
+  localStorage.setItem('CHRONO_DATA', JSON.stringify(schedules));
+  // 為了符合你的視覺風格，你甚至可以在這裡觸發一個「數據寫入」的小動畫
+  console.log("DATABASE_SYNC_COMPLETE");
+}, [schedules]);
+  
 useEffect(() => {
   if (editingObject) {
-    // 1. 立即或微延遲標記已掛載，觸發背景模糊動畫
     setIsModalMounted(true); 
-    
-    // 2. 稍微延遲顯示內部文字內容
     const timer = setTimeout(() => setShowModalContent(true), 150);
     return () => clearTimeout(timer);
   } else {
+    // 當 editingObject 為 null 時，確保所有動畫狀態回到初始值
     setShowModalContent(false);
-    setIsModalMounted(false); // 關閉時重置
+    setIsModalMounted(false);
   }
 }, [editingObject]);
 
