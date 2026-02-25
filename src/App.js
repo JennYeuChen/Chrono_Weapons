@@ -298,14 +298,14 @@ const closeModal = () => {
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
                   <RefreshCw size={12} className="animate-spin text-[#ffcc00]/60" />
-                  <span className="text-[9px] font-bold tracking-[0.5em] text-[#ffcc00]/40 uppercase">System_Active</span>
+                  <span className="text-[9px] font-bold tracking-[0.5em] text-[#ffcc00]/40 uppercase">系統啟動</span>
                 </div>
                 <h1 className="text-5xl md:text-7xl font-black text-[#ffcc00] tracking-tighter uppercase italic leading-none hover:skew-x-2 transition-transform cursor-crosshair">
                   CHRONO<br/>WEAPONS
                 </h1>
               </div>
               <div className="text-right">
-                <span className="text-[10px] font-mono opacity-20 block mb-2">AUTH_TOKEN: 0xFF-992</span>
+                <span className="text-[10px] font-mono opacity-20 block mb-2">授權碼: 0xFF-992</span>
                 <div className="bg-[#ffcc00] text-black text-[8px] font-black px-2 py-0.5 inline-block">V5.2_STABLE</div>
               </div>
             </header>
@@ -315,19 +315,19 @@ const closeModal = () => {
                 <Plus size={14} className="text-[#ffcc00]/40 mr-4" />
                 <input 
                   className="bg-transparent w-full outline-none text-[11px] font-bold uppercase tracking-widest placeholder:text-[#ffcc00]/10 py-4"
-                  placeholder="INPUT_NEW_PROTOCOL..."
+                  placeholder="創建新的時空..."
                   value={newScheduleName}
                   onChange={(e) => setNewScheduleName(e.target.value)}
                 />
               </div>
               <button type="submit" className="bg-[#ffcc00] text-black px-8 py-4 rounded-xl text-[10px] font-black hover:bg-white transition-all active:scale-95 shadow-[0_0_30px_rgba(255,204,0,0.1)]">
-                INIT_CORE
+                儲存
               </button>
             </form>
 
             <div className="space-y-3">
               <div className="text-[10px] text-[#ffcc00]/40 font-bold tracking-[0.3em] mb-6 flex items-center gap-2">
-                <Database size={10} /> ACCESS_POINTS ({schedules.length})
+                <Database size={10} />時空 ({schedules.length})
               </div>
               {schedules.map((s) => (
                 <div 
@@ -374,10 +374,10 @@ const closeModal = () => {
                 onClick={() => changeView('HOME')}
                 className="flex items-center gap-3 text-[10px] font-black text-[#ffcc00]/40 hover:text-[#ffcc00] transition-all uppercase tracking-widest group"
               >
-                <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" /> Back to command
+                <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" /> 返回
               </button>
               <div className="text-[8px] bg-[#ffcc00]/10 text-[#ffcc00] px-4 py-1.5 rounded-full border border-[#ffcc00]/20 font-black">
-                NODE_SECURE: {currentSchedule.id}
+                節點安全: {currentSchedule.id}
               </div>
             </nav>
 
@@ -435,7 +435,7 @@ const closeModal = () => {
                   </div>
                 </div>
                 <button type="submit" className={`bg-[#ffcc00] hover:bg-white text-black w-full py-5 text-[10px] font-black uppercase tracking-[0.4em] transition-all active:scale-95 ${UI_THEME.rounded}`}>
-                  EXEC_INIT_SEQUENCE
+                  創建
                 </button>
               </form>
             </div>
